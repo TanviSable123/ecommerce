@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Checkout</title>
+    <style>
+        body{
+            font-family:Arial;
+            background:#f5f5f5;
+            padding:20px;
+        }
+
+        .box{
+            background:white;
+            padding:20px;
+            border-radius:10px;
+            width:500px;
+            margin:auto;
+            box-shadow:0 0 10px gray;
+        }
+
+        h1{
+            text-align:center;
+        }
+
+        .item{
+            padding:10px;
+            border-bottom:1px solid #ddd;
+        }
+
+        .total{
+            font-size:20px;
+            font-weight:bold;
+            text-align:right;
+            margin-top:20px;
+        }
+
+        .btn{
+            display:block;
+            text-align:center;
+            background:green;
+            color:white;
+            padding:10px;
+            margin-top:20px;
+            text-decoration:none;
+            border-radius:5px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="box">
+
+<h1>Checkout Page</h1>
+
+{% for item in cart_items %}
+
+    <p>
+        {{ item.product.name }} - ₹{{ item.product.price }} x {{ item.quantity }}
+    </p>
+
+{% endfor %}
+
+<h3>Total: ₹{{ total }}</h3>
+
+<a href="/place-order/">
+    <button style="padding:10px 20px;background:green;color:white;">
+        Place Order
+    </button>
+</a>
+
+
+</div>
+
+</body>
+</html>

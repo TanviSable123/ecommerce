@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Shopping Cart</title>
+
+    <style>
+
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial,sans-serif;
+        }
+
+        body{
+            background:#f4f6f9;
+            padding:20px;
+        }
+
+        h1{
+            text-align:center;
+            margin-bottom:30px;
+            color:#333;
+        }
+
+        .cart-container{
+            max-width:900px;
+            margin:auto;
+        }
+
+        .cart-item{
+            background:white;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            padding:20px;
+            margin-bottom:15px;
+            border-radius:12px;
+            box-shadow:0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .product-info h2{
+            color:#333;
+        }
+
+        .price{
+            color:green;
+            font-size:20px;
+            font-weight:bold;
+        }
+
+        .quantity{
+            display:flex;
+            align-items:center;
+            gap:10px;
+        }
+
+        .btn{
+            text-decoration:none;
+            padding:8px 14px;
+            border-radius:5px;
+            color:white;
+            font-weight:bold;
+        }
+
+        .plus{
+            background:#28a745;
+        }
+
+        .minus{
+            background:#ffc107;
+            color:black;
+        }
+
+        .remove{
+            background:#dc3545;
+        }
+
+        .summary{
+            background:white;
+            padding:20px;
+            border-radius:12px;
+            margin-top:20px;
+            box-shadow:0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .checkout{
+            display:inline-block;
+            margin-top:15px;
+            background:#007bff;
+            color:white;
+            text-decoration:none;
+            padding:12px 20px;
+            border-radius:8px;
+        }
+
+        .back{
+            display:inline-block;
+            margin-top:15px;
+            margin-left:10px;
+            background:#6c757d;
+            color:white;
+            text-decoration:none;
+            padding:12px 20px;
+            border-radius:8px;
+        }
+
+    </style>
+
+</head>
+<body>
+
+<h1>🛒 Your Shopping Cart</h1>
+
+<div class="cart-container">
+
+{% for item in items %}
+
+<div class="cart-item">
+
+    <div class="product-info">
+        <h2>{{ item.product.name }}</h2>
+
+        <p class="price">
+            ₹{{ item.product.price }}
+        </p>
+    </div>
+
+    <div class="quantity">
+
+        <a href="/decrease/{{ item.id }}/"
+           class="btn minus">
+            -
+        </a>
+
+        <strong>
+            {{ item.quantity }}
+        </strong>
+
+        <a href="/increase/{{ item.id }}/"
+           class="btn plus">
+            +
+        </a>
+
+    </div>
+
+    <div>
+
+        <a href="/remove/{{ item.id }}/"
+           class="btn remove">
+            ❌ Remove
+        </a>
+
+    </div>
+
+</div>
+
+{% empty %}
+
+<h2 style="text-align:center;">
+    Your cart is empty 😔
+</h2>
+
+{% endfor %}
+
+<div class="summary">
+
+    <h2>
+        Total Amount:
+        ₹{{ total }}
+    </h2>
+
+    <a href="/checkout/"
+       class="checkout">
+        💳 Proceed To Checkout
+    </a>
+
+    <a href="/"
+       class="back">
+        ← Continue Shopping
+    </a>
+
+</div>
+
+</div>
+
+</body>
+</html>

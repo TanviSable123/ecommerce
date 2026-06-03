@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Order Success</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            text-align: center;
+            padding: 50px;
+        }
+
+        .box {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            width: 400px;
+            margin: auto;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            animation: pop 0.6s ease;
+        }
+
+        @keyframes pop {
+            from { transform: scale(0.5); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        h1 {
+            color: green;
+        }
+
+        .btn {
+            display: inline-block;
+            margin: 10px;
+            padding: 10px 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: white;
+        }
+
+        .home { background: #007bff; }
+        .shop { background: orange; }
+        .cart { background: #28a745; }
+
+        .order-info {
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+
+<body>
+
+<canvas id="confetti"></canvas>
+
+<div class="box">
+    <h1>🎉 Order Placed Successfully!</h1>
+
+    <p>Thank you for shopping with us ❤️</p>
+
+    <div class="order-info">
+        <p><b>Order ID:</b> {{ order.id }}</p>
+        <p><b>Total Amount:</b> ₹{{ order.total_amount }}</p>
+    </div>
+
+    <a href="/" class="btn home">🏠 Home</a>
+    <a href="/" class="btn shop">🛍 Continue Shopping</a>
+    <a href="/cart/" class="btn cart">🛒 View Cart</a>
+</div>
+
+<script>
+// Simple confetti animation
+const canvas = document.getElementById("confetti");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let pieces = [];
+
+for (let i = 0; i < 100; i++) {
+    pieces.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        r: Math.random() * 6 + 2,
+        d: Math.random() * 10
+    });
+}
+
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = "#ff0";
+
+    pieces.forEach(p => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2, true);
+        ctx.fill();
+
+        p.y += p.d;
+
+        if (p.y > canvas.height) {
+            p.y = 0;
+            p.x = Math.random() * canvas.width;
+        }
+    });
+
+    requestAnimationFrame(draw);
+}
+
+draw();
+</script>
+
+</body>
+</html>

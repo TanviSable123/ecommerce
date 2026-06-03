@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My E-Commerce Store</title>
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial,sans-serif;
+        }
+
+        body{
+            background:#f4f4f4;
+            transition:0.3s;
+        }
+
+        .dark-mode{
+            background:#1a1a1a;
+            color:white;
+        }
+
+        header{
+            background:#007bff;
+            color:white;
+            padding:15px 30px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            flex-wrap:wrap;
+        }
+
+        .logo{
+            font-size:28px;
+            font-weight:bold;
+        }
+
+        .actions{
+            display:flex;
+            gap:10px;
+            align-items:center;
+        }
+
+        button{
+            padding:10px 15px;
+            border:none;
+            border-radius:5px;
+            cursor:pointer;
+        }
+
+        .dark-btn{
+            background:black;
+            color:white;
+        }
+
+        .cart-btn{
+            background:orange;
+            color:white;
+        }
+
+        .search-box{
+            width:90%;
+            max-width:500px;
+            margin:20px auto;
+            display:block;
+            padding:12px;
+            border-radius:10px;
+            border:1px solid #ccc;
+            font-size:16px;
+        }
+
+        .container{
+            display:flex;
+            flex-wrap:wrap;
+            justify-content:center;
+            gap:20px;
+            padding:20px;
+        }
+
+        .card{
+            width:280px;
+            background:white;
+            border-radius:15px;
+            overflow:hidden;
+            box-shadow:0 4px 15px rgba(0,0,0,0.2);
+            transition:0.3s;
+        }
+
+        .card:hover{
+            transform:translateY(-10px);
+        }
+
+        .card img{
+            width:100%;
+            height:200px;
+            object-fit:cover;
+        }
+
+        .card-content{
+            padding:15px;
+        }
+
+        .price{
+            color:green;
+            font-size:22px;
+            font-weight:bold;
+        }
+
+        .rating{
+            color:gold;
+            margin:8px 0;
+        }
+
+        .add-btn{
+            display:inline-block;
+            text-decoration:none;
+            background:#007bff;
+            color:white;
+            padding:10px 15px;
+            border-radius:5px;
+            margin-top:10px;
+        }
+
+        .add-btn:hover{
+            background:#0056b3;
+        }
+
+        #toast{
+            position:fixed;
+            top:20px;
+            right:20px;
+            background:green;
+            color:white;
+            padding:15px;
+            border-radius:8px;
+            display:none;
+        }
+
+        @media(max-width:768px){
+            .card{
+                width:90%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div id="toast">
+    ✅ Product Added To Cart
+</div>
+
+<header>
+    <div class="logo">🛍 My Store</div>
+
+    <div class="actions">
+
+        {% if user.is_authenticated %}
+            <span>Welcome {{ user.username }}</span>
+            <a href="/logout/"><button>Logout</button></a>
+        {% else %}
+            <a href="/register/"><button>Register</button></a>
+        {% endif %}
+
+        <button class="dark-btn" onclick="toggleTheme()">🌙 Dark Mode</button>
+
+        <a href="/cart/"><button class="cart-btn">🛒 Cart</button></a>
+
+    </div>
+</header>
+
+<input
+type="text"
+id="search"
+class="search-box"
+placeholder="🔍 Search Products..."
+onkeyup="searchProducts()">
+
+<div class="container" id="products">
+
+{% for product in products %}
+
+<div class="card product">
+
+    <!-- ✅ REAL IMAGE FIX -->
+    {% if product.image %}
+        <img src="{{ product.image.url }}" alt="{{ product.name }}">
+    {% else %}
+        <img src="https://via.placeholder.com/300x200.png?text=No+Image">
+    {% endif %}
+
+    <div class="card-content">
+
+        <h2>{{ product.name }}</h2>
+
+        <div class="rating">⭐⭐⭐⭐⭐</div>
+
+        <p class="price">₹{{ product.price }}</p>
+
+        <p>{{ product.description }}</p>
+
+        <a href="/add/{{ product.id }}/"
+           class="add-btn"
+           onclick="showToast()">
+            Add To Cart
+        </a>
+
+    </div>
+
+</div>
+
+{% endfor %}
+
+</div>
+
+<script>
+
+function toggleTheme(){
+    document.body.classList.toggle("dark-mode");
+}
+
+function searchProducts(){
+
+    let input =
+    document.getElementById("search").value.toLowerCase();
+
+    let products =
+    document.querySelectorAll(".product");
+
+    products.forEach(function(product){
+
+        let text = product.innerText.toLowerCase();
+
+        product.style.display = text.includes(input) ? "block" : "none";
+
+    });
+
+}
+
+function showToast(){
+
+    let toast = document.getElementById("toast");
+
+    toast.style.display = "block";
+
+    setTimeout(function(){
+        toast.style.display = "none";
+    },2000);
+
+}
+
+</script>
+
+</body>
+</html>
